@@ -61,13 +61,7 @@ public class GestorArboles {
 		}while(opcion!=SALIR);
 	}
 
-	private static void visualizarArboles(Statement st, Scanner sc) throws SQLException {
-		String select="SELECT * FROM arboles ";
-		ResultSet result=st.executeQuery(select);
-		while(result.next()) {
-			System.out.println(result.getInt(1)+"-"+result.getString(2)+"-"+result.getString(3)+"-"+result.getString(4)+"-"+result.getDouble(5)+"-"+result.getString(6));
-		}
-	}
+
 
 	private static void insertarArbol(Scanner sc, Statement st) throws SQLException {
 		String nombre;
@@ -119,7 +113,13 @@ public class GestorArboles {
 		prep.executeUpdate();
 	}
 
-
+	private static void visualizarArboles(Statement st, Scanner sc) throws SQLException {
+		String select="SELECT * FROM arboles ";
+		ResultSet result=st.executeQuery(select);
+		while(result.next()) {
+			System.out.println(result.getInt(1)+"-"+result.getString(2)+"-"+result.getString(3)+"-"+result.getString(4)+"-"+result.getDouble(5)+"-"+result.getString(6));
+		}
+	}
 
 
 }
