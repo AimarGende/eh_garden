@@ -1,6 +1,7 @@
 package Arboles;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ public class GestorArboles {
 	static final String BBDD="arboles";
 	static final String USERNAME="root";
 	static final String PASSWORD="";
+	static Connection conexion;
 	public static void run() throws SQLException, ClassNotFoundException {
 		final int INSERTAR_ARBOL=1;
 		final int ELIMINAR_ARBOL=2;
@@ -20,10 +22,11 @@ public class GestorArboles {
 		int opcion=0;
 		
 		Scanner sc=new Scanner(System.in);
-		Connection conexion;
+		
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		conexion = DriverManager.getConnection(HOST+BBDD,USERNAME,PASSWORD);
 		Statement st=conexion.createStatement();
+		
 		
 		do {
 			System.out.println("-------MENU-------");
@@ -59,29 +62,61 @@ public class GestorArboles {
 	}
 
 	private static void visualizarArboles(Statement st, Scanner sc) throws SQLException {
-		String select="SLECT * FROM arboles";
+		String select="SELECT * FROM arboles ";
 		ResultSet result=st.executeQuery(select);
-		System.out.println(result.getString(1)+"-"+result.getString(2)+"-"+result.getString(3)+"-"+result.getDouble(4)+"-"+result.getString(5));
-		
+		while(result.next()) {
+			System.out.println(result.getInt(1)+"-"+result.getString(2)+"-"+result.getString(3)+"-"+result.getString(4)+"-"+result.getDouble(5)+"-"+result.getString(6));
+		}
 	}
 
 	private static void insertarArbol(Scanner sc, Statement st) throws SQLException {
-		System.out.println("Introduce la sentencia sql para insertar el arbol, EJ:INSERT INTO arboles (nombre_comun, nombre_cientifico_habitat, altura, origen) VALUES('NombreArbol','NombreCientifico','Habitat',altura,'Origen');");
-		String sentencia=sc.nextLine();
+		String nombre;
+		String nombreCien;
+		String habitat;
+		double altura;
+		String origen;
+		System.out.println("Introduce el nombre del arbol");
+		nombre=sc.nextLine();
+		System.out.println("Introduce el nombre cientifico del arbol");
+		nombreCien=sc.nextLine();
+		System.out.println("Introduce el habitat del arbol");
+		habitat=sc.nextLine();
+		System.out.println("Introduce la altura del arbol");
+		altura=Double.parseDouble(sc.nextLine());
+		System.out.println("Introduce el origen del arbol");
+		origen=sc.nextLine();
+		String sentencia="INSERT INTO arboles (nombre_comun, nombre_cientifico, habitat, altura, origen) VALUES('"+nombre+"','"+nombreCien+"','"+habitat+"',"+altura+",'"+origen+"');";
 		st.execute(sentencia);
 	}
 	
 	private static void eliminarArbol(Scanner sc, Statement st) throws SQLException {
-		System.out.println("Introduce la sentencia sql para eliminar el arbol, EJ: DELETE FROM arboles WHERE atributo=valor;");
-		String sentencia=sc.nextLine();
+		int id;
+		System.out.println("Inserta el id que quieres eliminar");
+		id=Integer.parseInt(sc.nextLine());
+		String sentencia="DELETE FROM arboles WHERE id="+id+";";
 		st.execute(sentencia);
 	}
 	
 	private static void modificarArbol(Scanner sc, Statement st) throws SQLException {
-		System.out.println("Introduce la sentencia sql para actualizar el arbol, EJ:UPDATE arboles SET nombre_de_atributo=nuevo_valor WHERE nombre_de_atributo=valor_antiguo;");
-		String sentencia=sc.nextLine();
-		st.executeUpdate(sentencia);
+		String atrib;
+		String newValue;
+		int id;
 		
+		System.out.println("Introduce la id  del arbol que quieres cambiar");
+		id=Integer.parseInt(sc.nextLine());
+		System.out.println("Introduce el atributo del arbol que quieres actualizar:");
+		atrib=sc.nextLine().toLowerCase();
+		System.out.println("Introduce el nuevo valor del atibuto:");
+		newValue=sc.nextLine();
+		
+		PreparedStatement prep=conexion.prepareStatement("UPDATE arboles SET "+atrib+"= (?) WHERE id="+id+";");
+		if(atrib.equals("altura")) {
+			prep.setDouble(1, Double.parseDouble(newValue));
+		}
+		else {
+			prep.setString(1, newValue);
+		}
+		prep.executeUpdate();
 	}
 
 
