@@ -1,4 +1,5 @@
 package Arboles;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ public class GestorArboles {
 		final int VISUALIZAR_ARBOLES=4;
 		final int SALIR=0;
 		int opcion=0;
-		Arbol arbol=new Arbol();
+		
 		Scanner sc=new Scanner(System.in);
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -38,7 +39,7 @@ public class GestorArboles {
 			opcion=Integer.parseInt(sc.nextLine());
 			switch(opcion) {
 				case INSERTAR_ARBOL :
-					insertarArbol(sc,arbol);
+					insertarArbol(sc);
 					System.out.println("se ha insertado el arbol correctamente");
 					break;
 				case ELIMINAR_ARBOL:
@@ -63,25 +64,30 @@ public class GestorArboles {
 
 
 
-	private static void insertarArbol(Scanner sc,Arbol arbol) throws SQLException {
+	private static void insertarArbol(Scanner sc) throws SQLException {
 		PreparedStatement pt=conexion.prepareStatement("INSERT INTO arboles (nombre_comun, nombre_cientifico, habitat, altura, origen) VALUES(?,?,?,?,?);");
+		String nombre;
+		String nombreCien;
+		String habitat;
+		double altura;
+		String origen;
 		
 		System.out.println("Introduce el nombre del arbol");
-		arbol.setNombreComun(sc.nextLine());
+		nombre=sc.nextLine();
 		System.out.println("Introduce el nombre cientifico del arbol");
-		arbol.setNombreCientifico(sc.nextLine());
+		nombreCien=sc.nextLine();
 		System.out.println("Introduce el habitat del arbol");
-		arbol.setHabitat(sc.nextLine());
+		habitat=sc.nextLine();
 		System.out.println("Introduce la altura del arbol");
-		arbol.setAltura(Double.parseDouble(sc.nextLine()));
+		altura=Double.parseDouble(sc.nextLine());
 		System.out.println("Introduce el origen del arbol");
-		arbol.setOrigen(sc.nextLine());
+		origen=sc.nextLine();
 		
-		pt.setString(1, arbol.getNombreComun());
-		pt.setString(2, arbol.getNombreCientifico());
-		pt.setString(3, arbol.getHabitat());
-		pt.setDouble(4, arbol.getAltura());
-		pt.setString(5, arbol.getOrigen());
+		pt.setString(1, nombre);
+		pt.setString(2, nombreCien);
+		pt.setString(3, habitat);
+		pt.setDouble(4, altura);
+		pt.setString(5, origen);
 		
 		pt.execute();
 	}
@@ -118,8 +124,8 @@ public class GestorArboles {
 	}
 
 	private static void visualizarArboles(Statement st, Scanner sc) throws SQLException {
-		String select="SELECT * FROM arboles ";
-		ResultSet result=st.executeQuery(select);
+		PreparedStatement pt=conexion.prepareStatement("SELECT * FROM arboles ");
+		ResultSet result=pt.executeQuery();
 		while(result.next()) {
 			System.out.println(result.getInt(1)+"-"+result.getString(2)+"-"+result.getString(3)+"-"+result.getString(4)+"-"+result.getDouble(5)+"-"+result.getString(6));
 		}
