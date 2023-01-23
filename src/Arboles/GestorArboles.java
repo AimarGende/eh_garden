@@ -98,7 +98,7 @@ public class GestorArboles {
 		
 		System.out.println("Introduce la id  del arbol que quieres cambiar");
 		id=Integer.parseInt(sc.nextLine());
-		System.out.println("Introduce el atributo del arbol que quieres actualizar:");
+		System.out.println("Introduce el atributo del arbol que quieres actualizar: Las opciones son nombre_comun, nombre_cientifico, habitat, altura y origen");
 		atrib=sc.nextLine().toLowerCase();
 		System.out.println("Introduce el nuevo valor del atibuto:");
 		newValue=sc.nextLine();
