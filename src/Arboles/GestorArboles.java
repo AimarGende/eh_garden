@@ -42,11 +42,11 @@ public class GestorArboles {
 					System.out.println("se ha insertado el arbol correctamente");
 					break;
 				case ELIMINAR_ARBOL:
-					eliminarArbol(sc,st);
+					eliminarArbol(sc);
 					System.out.println("Se ha eliminado el arbol");
 					break;
 				case MODIFICAR_ARBOL:
-					modificarArbol(sc,st);
+					modificarArbol(sc);
 					System.out.println("Se ha modificado el arbol");
 					break;
 				case VISUALIZAR_ARBOLES:
@@ -95,7 +95,7 @@ public class GestorArboles {
 		pt.execute();
 	}
 	
-	private static void modificarArbol(Scanner sc, Statement st) throws SQLException {
+	private static void modificarArbol(Scanner sc) throws SQLException {
 		String atrib;
 		String newValue;
 		int id;
