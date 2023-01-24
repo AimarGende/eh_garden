@@ -68,6 +68,12 @@ public class Arbol {
 	public void setHabitat(String habitat) {
 		this.habitat = habitat;
 	}
+
+	@Override
+	public String toString() {
+		return "Arbol id=" + id + ", nombreComun=" + nombreComun + ", nombreCientifico=" + nombreCientifico
+				+ ", altura=" + altura + ", origen=" + origen + ", habitat=" + habitat + "]";
+	}
 	
 	
 	
