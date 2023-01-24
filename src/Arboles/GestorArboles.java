@@ -107,7 +107,7 @@ public class GestorArboles {
 			st.execute("UPDATE arboles SET "+atrib+"= "+Double.parseDouble(newValue)+" WHERE id="+id+";");
 		}
 		else {
-			st.execute("UPDATE arboles SET "+atrib+"= "+newValue+" WHERE id="+id+";");
+			st.execute("UPDATE arboles SET "+atrib+"= '"+newValue+"' WHERE id="+id+";");
 		}
 		
 	}
